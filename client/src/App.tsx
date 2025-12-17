@@ -1,4 +1,5 @@
 import Home from "./pages/home";
+import Team from "./pages/team";
 import Navbar from "./components/Navbar";
 export default function App() {
   return (
@@ -12,7 +13,7 @@ export default function App() {
       }}
     >
       <Navbar></Navbar>
-      <Home></Home>
+      <Team />
     </div>
   );
 }

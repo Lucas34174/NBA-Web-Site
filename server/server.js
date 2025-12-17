@@ -257,6 +257,7 @@ app.get("/team/:id", (req, res) => {
     city,
     arena,
     arenacapacity,
+    generalmanager,
     owner,
     headcoach
   FROM team_details
@@ -335,5 +336,28 @@ app.get("/stat/sumMatch", (req, res) => {
     };
     res.send(data);
     console.log(data);
+  });
+});
+
+app.get("/page/team", (req, res) => {
+  const q = `  
+  SELECT 
+    team_id,
+    abbreviation,
+    nickname,
+    yearfounded,
+    city,
+    arena,
+    arenacapacity,
+    owner,
+    generalmanager,
+    headcoach
+  FROM team_details;`;
+  db.query(q, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send(result);
+    console.log(result);
   });
 });

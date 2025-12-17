@@ -26,14 +26,15 @@ export type Player = {
 };
 
 export type Team = {
-  team_id: string;
+  team_id?: string;
   nickname: string;
   abbreviation: string;
-  yearfounded: number;
+  yearfounded: number | string;
   city: string;
   arena: string;
-  arenacapacity: string;
-  owner: string;
+  arenacapacity?: string;
+  owner?: string;
+  generalmanager?: string;
   headcoach: string;
 };
 

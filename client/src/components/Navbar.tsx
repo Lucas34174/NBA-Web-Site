@@ -12,28 +12,22 @@ function Navbar() {
           </a>
           <ul className="nav nav-tabs">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
+              <a className="nav-link text-white" href="#">
                 Home
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="#">
+              <a className="nav-link active " aria-current="page" href="#">
                 Team
               </a>
             </li>
             <li className="nav-item">
-              <a
-                className="nav-link disabled text-secondary"
-                aria-disabled="true"
-              >
+              <a className="nav-link text-white disabled" aria-disabled="true">
                 Player
               </a>
             </li>
             <li className="nav-item">
-              <a
-                className="nav-link disabled text-secondary"
-                aria-disabled="true"
-              >
+              <a className="nav-link disabled text-white " aria-disabled="true">
                 Match
               </a>
             </li>
