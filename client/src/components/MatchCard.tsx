@@ -3,9 +3,10 @@ import { Trophy } from "lucide-react";
 import NBALogo from "./nbaLogo";
 interface props {
   match: Game;
+  foot: boolean;
   title?: string;
 }
-export default function MatchCard({ match, title }: props) {
+export default function MatchCard({ match, title, foot }: props) {
   const totalPoints = match.pts_away + match.pts_home;
   const getSeasonType = (tipe: string): string => {
     const label: Record<string, string> = {
@@ -116,33 +117,34 @@ export default function MatchCard({ match, title }: props) {
             </div>
           </div>
         </div>
-        {/* Statistiques additionnelles */}
-        <div className="card-footer bg-black bg-opacity-25">
-          <div className="row g-3 text-center small">
-            <div className="col">
-              <div className="text-white">Points</div>
-              <div className="fw-bold text-info fs-5">
-                {match.speci ? match.speci : totalPoints}
+        {foot && (
+          <div className="card-footer bg-black bg-opacity-25">
+            <div className="row g-3 text-center small">
+              <div className="col">
+                <div className="text-white">Points</div>
+                <div className="fw-bold text-info fs-5">
+                  {match.speci ? match.speci : totalPoints}
+                </div>
               </div>
-            </div>
-            <div className="col">
-              <div className="text-white">Résultat</div>
-              <div className="fw-bold text-white">
-                {match.wl_home === "W"
-                  ? `${match.team_name_home} win`
-                  : `${match.team_name_away} win`}
-                <Trophy
-                  className="text-warning"
-                  style={{ width: "20px", height: "20px" }}
-                />
+              <div className="col">
+                <div className="text-white">Résultat</div>
+                <div className="fw-bold text-white">
+                  {match.wl_home === "W"
+                    ? `${match.team_name_home} win`
+                    : `${match.team_name_away} win`}
+                  <Trophy
+                    className="text-warning"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="col">
-              <div className="text-muted">Game ID</div>
-              <div className="fw-bold text-secondary">{match.game_id}</div>
+              <div className="col">
+                <div className="text-muted">Game ID</div>
+                <div className="fw-bold text-secondary">{match.game_id}</div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

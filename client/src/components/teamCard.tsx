@@ -1,13 +1,15 @@
 import type { Team } from "../type";
+import type { ReactNode } from "react";
 import NBALogo from "./nbaLogo";
 
 interface props {
   team: Team;
-  title?: string;
+  title?: ReactNode;
   foot?: string;
 }
 
 export default function TeamCard({ team, title, foot }: props) {
+  console.log("team:" + team["abbreviation"]);
   return (
     <>
       <div className="py-4">
