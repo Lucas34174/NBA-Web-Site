@@ -279,22 +279,35 @@ WHERE cp.rosterstatus='Active' and cp.team_id = 1610612747;
 
 
 SELECT DISTINCT
-    cp.team_id,
-    td.nickname,
-    cp.position,
-    cp.height,
-    cp.weight,
-    cp.jersey,
-    cp.country,
-    SUBSTR(cp.birthdate, 1, 10) AS birthdate,
+    pss.player_name,
+    cp.first_name,
     cp.last_name,
-    cp.first_name
+    cp.position,
+    pss.player_height,
+    pss.player_weight,
+    cp.jersey,
+    pss.country,
+    pss.gp,
+    pss.pts,
+    pss.reb,
+    pss.ast,
+    pss.net_rating,
+    pss.ts_pct,
+    pss.ast_pct,
+    pss.oreb_pct,
+    pss.dreb_pct,
+  pss.age
 FROM players_season_stats pss
-LEFT JOIN common_player_info cp 
-    ON CONCAT(cp.first_name, ' ', cp.last_name) COLLATE utf8mb4_0900_ai_ci
-       = pss.player_name COLLATE utf8mb4_0900_ai_ci
-LEFT JOIN team_details td 
-    ON td.abbreviation COLLATE utf8mb4_0900_ai_ci
-       = pss.team_abbreviation COLLATE utf8mb4_0900_ai_ci
+LEFT JOIN common_player_info cp
+  ON CONCAT(cp.first_name, ' ', cp.last_name)
+     COLLATE utf8mb4_0900_ai_ci
+     = pss.player_name
+     COLLATE utf8mb4_0900_ai_ci
 WHERE pss.season = '2022-23'
-AND cp.team_id = 1610612747;
+  AND pss.team_abbreviation = 'LAL';
+
+
+  SELECT *
+FROM teams_season_stats
+WHERE season = '2022-23'
+  AND team = 'Los Angeles Lakers';

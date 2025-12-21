@@ -97,10 +97,10 @@ export default function TeamMatch({ teamId }: props) {
   }, [games, seasonFilter, yearFilter, searchTerm]);
   return (
     <>
-      <div className="container-fluid">
-        <h1 className="fw-bold text-white text-center mb-4">All Games</h1>
-      </div>
-      <div className="container-fluid bg-dark p-4 rounded">
+      <div className="container-fluid bg-dark bg-opacity-75 p-4 rounded">
+        <div className="container-fluid">
+          <h1 className="fw-bold text-white text-center mb-4">All Games</h1>
+        </div>
         <div className="row g-3 align-items-end">
           {/* Recherche */}
           <div className="col-12 col-md-4">

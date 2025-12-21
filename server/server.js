@@ -565,8 +565,9 @@ app.get("/season/:id", (req, res) => {
   });
 });
 
-app.get("/team/:abbr/player", (req, res) => {
+app.get("/team/:abbr/:season/player", (req, res) => {
   const abbr = req.params.abbr;
+  const season = req.params.season;
   const q = `
 SELECT DISTINCT
     pss.player_name,
@@ -593,15 +594,26 @@ LEFT JOIN common_player_info cp
      COLLATE utf8mb4_0900_ai_ci
      = pss.player_name
      COLLATE utf8mb4_0900_ai_ci
-WHERE pss.season = '2022-23'
+WHERE pss.season = ?
   AND pss.team_abbreviation = ?;`;
-  db.query(q, [abbr], (err, result) => {
+  db.query(q, [season, abbr], (err, result) => {
     if (err) console.log(err);
     res.send(result);
     console.log(result);
   });
 });
 
-app.get("/team/playerstats", (req, res) => {
-  const q = ``;
+app.get("/team/:team/:season/stats", (req, res) => {
+  const team = req.params.team;
+  const season = req.params.season;
+  const q = `
+SELECT *
+FROM teams_season_stats
+WHERE season = ?
+  AND team LIKE ?;`;
+  db.query(q, [season, `%${team}%`], (err, result) => {
+    if (err) console.log(err);
+    res.send(result[0]);
+    console.log(result[0]);
+  });
 });

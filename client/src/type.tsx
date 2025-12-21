@@ -115,3 +115,35 @@ export type TeamPlayer = {
   oreb_pct: number;
   dreb_pct: number;
 };
+
+export type TeamFullStats = {
+  teamstatspk: number;
+  team: string;
+  games_played: number;
+  wins: number;
+  losses: number;
+  win_percentage: number;
+  minutes: number;
+  points: number;
+  field_goals_made: number;
+  field_goals_attempted: number;
+  field_goal_percentage: number;
+  three_pointers_made: number;
+  three_pointers_attempted: number;
+  three_point_percentage: number;
+  free_throws_made: number;
+  free_throw_attempted: number;
+  free_throw_percentage: number;
+  offensive_rebounds: number;
+  defensive_rebounds: number;
+  rebounds: number;
+  assists: number;
+  turnovers: number;
+  steals: number;
+  blocks: number;
+  blocks_attempted: number;
+  personal_fouls: number;
+  personal_fouls_drawn: number;
+  plus_minus: number;
+  season: string;
+};

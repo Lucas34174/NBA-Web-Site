@@ -35,6 +35,11 @@ export default function TeamSideBar({ team, onBack, onView }: props) {
                 Team Player
               </a>
             </li>
+            <li className="nav-item px-5 " onClick={() => onView("stats")}>
+              <a className="nav-link disabled text-white " aria-disabled="true">
+                Statistics
+              </a>
+            </li>
             <li className="nav-item px-5 " onClick={() => onView("history")}>
               <a className="nav-link disabled text-white " aria-disabled="true">
                 Best Player

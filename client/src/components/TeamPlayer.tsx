@@ -6,10 +6,16 @@ interface props {
 
 export default function TeamPlayer({ teamAbbr }: props) {
   const [players, setPlayer] = useState<TeamPlayer[]>([]);
-  const fetchTeamPlayer = async (teamAbbr: string) => {
+  const [yearFilter, setYearFilter] = useState("2022-23");
+
+  const season = [];
+  for (let i = 0; i < 23; i++) {
+    season.unshift(2000 + i + "-" + (i + 1));
+  }
+  const fetchTeamPlayer = async (teamAbbr: string, season: string) => {
     try {
       const response = await fetch(
-        "http://localhost:7000/team/" + teamAbbr + "/player"
+        "http://localhost:7000/team/" + teamAbbr + "/" + season + "/player"
       );
       if (!response.ok) throw new Error("Failed to fetch team player");
       const data = await response.json();
@@ -86,27 +92,49 @@ export default function TeamPlayer({ teamAbbr }: props) {
     );
   };
   useEffect(() => {
-    fetchTeamPlayer(teamAbbr);
-  }, [teamAbbr]);
+    fetchTeamPlayer(teamAbbr, yearFilter);
+  }, [teamAbbr, yearFilter]);
   return (
-    <div className="bg-dark bg-opacity-75 min-vh-100 py-5">
-      <div className="container">
-        {/* <div className="text-center mb-5">
+    <>
+      <div className="container-fluid bg-dark bg-opacity-75 p-4 rounded">
+        <div className="container-fluid">
+          <h1 className="fw-bold text-white text-center mb-4">All Players</h1>
+        </div>
+        <div className="row g-3 align-items-end">
+          {/* Filtre année */}
+          <div className="col-12 col-md-3">
+            <label className="form-label text-light small">Saison</label>
+            <select
+              value={yearFilter}
+              onChange={(e) => setYearFilter(e.target.value)}
+              className="form-select bg-dark text-light border-secondary"
+            >
+              {season?.map((season) => (
+                <option value={season}>{season}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="bg-dark bg-opacity-75 min-vh-100 py-5">
+        <div className="container">
+          {/* <div className="text-center mb-5">
           <div className="display-1 mb-3">🏀</div>
           <h1 className="display-5 fw-bold text-white mb-2">Players</h1>
           <p className="text-muted">Team Roster</p>
         </div> */}
 
-        <TableSection title="Guards" playersList={guards} />
-        <TableSection title="Forwards & Centers" playersList={forwards} />
-        <TableSection title="Others" playersList={other} />
-        {players.length === 0 && (
-          <div className="text-center py-5">
-            <div className="display-1 mb-3">🏀</div>
-            <p className="text-muted fs-5">No players found</p>
-          </div>
-        )}
+          <TableSection title="Guards" playersList={guards} />
+          <TableSection title="Forwards & Centers" playersList={forwards} />
+          <TableSection title="Others" playersList={other} />
+          {players.length === 0 && (
+            <div className="text-center py-5">
+              <div className="display-1 mb-3">🏀</div>
+              <p className="text-muted fs-5">No players found</p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import TeamHome from "./TeamHome";
 import TeamHistory from "./TeamBestPlayer";
 import TeamMatch from "./TeamMatch";
 import TeamPlayer from "./TeamPlayer";
+import TeamStats from "./TeamStats";
 interface propsTeamDetails {
   teamId: string;
   onBack: any;
@@ -45,6 +46,9 @@ export default function TeamDetails({ teamId, onBack }: propsTeamDetails) {
           <TeamPlayer teamAbbr={team?.abbreviation ?? "LAL"} />
         )}
         {currentView === "match" && <TeamMatch teamId={teamId} />}
+        {currentView === "stats" && (
+          <TeamStats teamName={team?.nickname ?? "Lakers"} />
+        )}
         {currentView === "history" && (
           <TeamHistory teamAbbr={team?.abbreviation ?? "LAL"} />
         )}
