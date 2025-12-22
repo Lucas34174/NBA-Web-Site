@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import type { Team } from "../type";
 import TeamDetails from "../components/Team/TeamDetails";
 import TeamList from "../components/Team/TeamList";
-
-export default function Team() {
+interface props {
+  onSelectPlayer: any;
+}
+export default function Team({ onSelectPlayer }: props) {
   const [team, setTeam] = useState<Team[]>();
   const [currentView, setCurrentView] = useState("list");
   const [selectedTeamId, setSelectedTeamId] = useState("");
@@ -39,7 +41,11 @@ export default function Team() {
       {currentView === "list" ? (
         <TeamList teams={team} onTeamClick={handleTeamClick} />
       ) : (
-        <TeamDetails teamId={selectedTeamId} onBack={handleBackToList} />
+        <TeamDetails
+          teamId={selectedTeamId}
+          onSelectPlayer={onSelectPlayer}
+          onBack={handleBackToList}
+        />
       )}
     </>
   );

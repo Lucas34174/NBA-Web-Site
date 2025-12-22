@@ -29,8 +29,6 @@ export default function TeamRow({ team, header, onTeamInfoClick }: props) {
         >
           <NBALogo team={team.abbreviation} size="50px" />
         </button>
-        {/* <NBALogo team={team.abbreviation} size="50px" /> */}
-
         <div className="modal fade" tabIndex={-1} id={team.team_id}>
           <div className="modal-dialog modal-lg">
             <div className="modal-content bg-transparent border-0">

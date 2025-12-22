@@ -8,10 +8,15 @@ import TeamPlayer from "./TeamPlayer";
 import TeamStats from "./TeamStats";
 interface propsTeamDetails {
   teamId: string;
+  onSelectPlayer: any;
   onBack: any;
 }
 
-export default function TeamDetails({ teamId, onBack }: propsTeamDetails) {
+export default function TeamDetails({
+  teamId,
+  onBack,
+  onSelectPlayer,
+}: propsTeamDetails) {
   const [team, setTeam] = useState<TeamDetails>();
   const [currentView, setCurrentView] = useState("home");
   const fetchTeamCard = async (id: string) => {
@@ -43,7 +48,10 @@ export default function TeamDetails({ teamId, onBack }: propsTeamDetails) {
       <div className="col">
         {currentView === "home" && <TeamHome teamId={teamId} />}
         {currentView === "player" && (
-          <TeamPlayer teamAbbr={team?.abbreviation ?? "LAL"} />
+          <TeamPlayer
+            teamAbbr={team?.abbreviation ?? "LAL"}
+            onSelectPlayer={onSelectPlayer}
+          />
         )}
         {currentView === "match" && <TeamMatch teamId={teamId} />}
         {currentView === "stats" && (

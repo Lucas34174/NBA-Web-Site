@@ -9,7 +9,7 @@ interface props {
 export default function TeamSideBar({ team, onBack, onView }: props) {
   return (
     <>
-      <nav className="navbar  bg-dark bg-opacity-75 vh-100">
+      <nav className="navbar  bg-dark bg-opacity-75">
         <div className="container-fluid">
           <div className="container-fluid">
             <button onClick={onBack} className="btn btn-outline-light">

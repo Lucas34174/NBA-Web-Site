@@ -2,14 +2,15 @@ import type { TeamPlayer } from "../../type";
 import { useEffect, useState } from "react";
 interface props {
   teamAbbr: string;
+  onSelectPlayer: any;
 }
 
-export default function TeamPlayer({ teamAbbr }: props) {
+export default function TeamPlayer({ teamAbbr, onSelectPlayer }: props) {
   const [players, setPlayer] = useState<TeamPlayer[]>([]);
   const [yearFilter, setYearFilter] = useState("2022-23");
 
   const season = [];
-  for (let i = 0; i < 23; i++) {
+  for (let i = 9; i < 23; i++) {
     season.unshift(2000 + i + "-" + (i + 1));
   }
   const fetchTeamPlayer = async (teamAbbr: string, season: string) => {
@@ -31,12 +32,17 @@ export default function TeamPlayer({ teamAbbr }: props) {
   const other = players.filter((p) => p.position === null);
   const PlayerRow = ({ player }: { player: TeamPlayer }) => {
     return (
-      <div className="row align-items-center px-3 py-2 mb-2 rounded player-row">
+      <div className="row  align-items-center px-3 py-2 mb-2 rounded player-row">
         {/* Jersey */}
 
         {/* Player */}
         <div className="col-8 ">
-          <div className="fw-semibold text-white">{player.player_name}</div>
+          <div
+            className="fw-semibold text-white"
+            onClick={() => onSelectPlayer(player.player_name)}
+          >
+            {player.player_name}
+          </div>
           <div className=" text-center d-flex">
             {player.jersey && (
               <span className="text-secondary fs-6 ">{player.jersey} </span>
@@ -123,7 +129,6 @@ export default function TeamPlayer({ teamAbbr }: props) {
           <h1 className="display-5 fw-bold text-white mb-2">Players</h1>
           <p className="text-muted">Team Roster</p>
         </div> */}
-
           <TableSection title="Guards" playersList={guards} />
           <TableSection title="Forwards & Centers" playersList={forwards} />
           <TableSection title="Others" playersList={other} />

@@ -3,14 +3,17 @@ import Navbar from "./components/Navbar";
 import Player from "./pages/player";
 import Home from "./pages/home";
 import Team from "./pages/team";
-import TeamHome from "./components/Team/TeamHome";
+
 export default function App() {
   const [currentView, setCurrentView] = useState<"home" | "team" | "player">(
     "home"
   );
+
+  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
+
   return (
     <div
-      className="min-h-screen bg-black"
+      className="min-h-screen bg-black "
       style={{
         backgroundImage: "url('/basketball-background.jpg')",
         backgroundSize: "cover",
@@ -18,10 +21,26 @@ export default function App() {
         backgroundAttachment: "fixed",
       }}
     >
-      <Navbar onView={setCurrentView}></Navbar>
+      <Navbar
+        onView={setCurrentView}
+        onSelectPlayer={(playerName: string) => {
+          setSelectedPlayer(playerName);
+          setCurrentView("player");
+        }}
+      />
+
       {currentView === "home" && <Home />}
-      {currentView === "team" && <Team />}
-      {/* <Player playerName="Nikola Jokić" /> */}
+      {currentView === "team" && (
+        <Team
+          onSelectPlayer={(playerName: string) => {
+            setSelectedPlayer(playerName);
+            setCurrentView("player");
+          }}
+        />
+      )}
+      {currentView === "player" && selectedPlayer && (
+        <Player playerName={selectedPlayer} />
+      )}
     </div>
   );
 }
