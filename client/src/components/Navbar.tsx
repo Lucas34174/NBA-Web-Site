@@ -1,4 +1,4 @@
-function Navbar() {
+function Navbar({ onView }: any) {
   return (
     <>
       <nav className="navbar navbar-dark bg-dark">
@@ -11,26 +11,26 @@ function Navbar() {
             />
           </a>
           <ul className="nav nav-tabs">
-            <li className="nav-item">
+            <li className="nav-item" onClick={() => onView("home")}>
               <a className="nav-link text-white" href="#">
                 Home
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" onClick={() => onView("team")}>
               <a className="nav-link active " aria-current="page" href="#">
                 Team
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link text-white disabled" aria-disabled="true">
                 Player
               </a>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               <a className="nav-link disabled text-white " aria-disabled="true">
                 Match
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>

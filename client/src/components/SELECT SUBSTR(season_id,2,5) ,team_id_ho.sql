@@ -127,11 +127,9 @@ SELECT
   headcoach
 FROM team_details;
 
-
 head -2 all_seasons.csv                                                                                           ✔ ▓▒░
 id,player_name,team_abbreviation,age,player_height,player_weight,college,country,draft_year,draft_round,draft_number,gp,pts,reb,ast,net_rating,oreb_pct,dreb_pct,usg_pct,ts_pct,ast_pct,season
 0,Randy Livingston,HOU,22.0,193.04,94.800728,Louisiana State,USA,1996,2,42,64,3.9,1.5,2.4,0.3,0.042,0.071,0.16899999999999998,0.48700000000000004,0.248,1996-97
-
 
 CREATE TABLE players_season_stats (
     id INT,
@@ -310,4 +308,4 @@ WHERE pss.season = '2022-23'
   SELECT *
 FROM teams_season_stats
 WHERE season = '2022-23'
-  AND team = 'Los Angeles Lakers';
+  AND team = '%Lakers%';

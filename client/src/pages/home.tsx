@@ -5,7 +5,7 @@ import type { Game, Player, sumMatch } from "../type";
 import MatchCard from "../components/MatchCard";
 import { Calendar } from "lucide-react";
 import PlayerCard from "../components/PlayerCard";
-import TeamCard from "../components/teamCard";
+import TeamCard from "../components/Team/TeamCard";
 import LineChart, { sumChart as SumChart } from "../components/Chart";
 import type { AVGscore } from "../type";
 type greatest = {
@@ -250,7 +250,7 @@ export default function Home() {
             <p className="text-secondary text-white fs-5">
               Un jour comme aujourd'hui - {formatDate(history.game_date)}
             </p>
-            <MatchCard match={history} />
+            <MatchCard match={history} foot={true} />
           </div>
         </div>
       )}
@@ -267,6 +267,7 @@ export default function Home() {
             <div className="col-12">
               <MatchCard
                 match={maxscore}
+                foot={true}
                 title="Match avec le plus de points combinés"
               />
             </div>
@@ -274,6 +275,7 @@ export default function Home() {
           {bigDifference && (
             <div className="col-12">
               <MatchCard
+                foot={true}
                 match={bigDifference}
                 title="Plus gros écart de score"
               />

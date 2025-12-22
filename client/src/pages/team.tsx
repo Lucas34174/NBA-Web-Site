@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Team } from "../type";
-import TeamDetails from "../components/TeamDetails";
-import TeamList from "../components/TeamList";
+import TeamDetails from "../components/Team/TeamDetails";
+import TeamList from "../components/Team/TeamList";
 
 export default function Team() {
   const [team, setTeam] = useState<Team[]>();

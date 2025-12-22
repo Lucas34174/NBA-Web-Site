@@ -1,4 +1,4 @@
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar, Radar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -6,12 +6,13 @@ import {
   PointElement,
   BarElement,
   LineElement,
+  RadialLinearScale,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
 import type { ChartOptions } from "chart.js";
-import type { AVGscore, sumMatch, Game } from "../type";
+import type { AVGscore, sumMatch, Game, PlayerRadarData } from "../type";
 
 ChartJS.register(
   CategoryScale,
@@ -19,6 +20,7 @@ ChartJS.register(
   PointElement,
   BarElement,
   LineElement,
+  RadialLinearScale,
   Title,
   Tooltip,
   Legend
@@ -174,4 +176,65 @@ export const GameChart = ({ score, abbreviation }: propsgameChart) => {
   );
 };
 
+interface propsRadar {
+  player: PlayerRadarData;
+}
+
+const normalize = (value: number, min: number, max: number) =>
+  Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+export function RadarChart({ player }: propsRadar) {
+  const ts = clamp(player.ts_pct, 0.45, 0.75);
+  const data = {
+    labels: [
+      "Scoring",
+      "Playmaking",
+      "Rebounds",
+      "Efficiency",
+      "Usage",
+      "Impact",
+    ],
+    datasets: [
+      {
+        label: player.player_name,
+        data: [
+          normalize(player.pts, 0, 35),
+          normalize(player.ast, 0, 12),
+          normalize(player.reb, 0, 15),
+          normalize(ts, 0.45, 0.75),
+          normalize(player.usg_pct, 0.15, 0.4),
+          normalize(player.net_rating, -10, 10),
+        ],
+        backgroundColor: "rgba(54, 162, 235, 0.3)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(54, 162, 235, 1)",
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      r: {
+        min: 0,
+        max: 100,
+        ticks: { display: false },
+        grid: { color: "#444" },
+        angleLines: { color: "#444" },
+        pointLabels: {
+          color: "#fff",
+          font: { size: 12 },
+        },
+      },
+    },
+    plugins: {
+      legend: { display: false },
+    },
+  };
+
+  return <Radar data={data} options={options} />;
+}
 export default LineChart;

@@ -147,3 +147,75 @@ export type TeamFullStats = {
   plus_minus: number;
   season: string;
 };
+
+export interface PlayerInfo {
+  person_id: string;
+  first_name: string;
+  last_name: string;
+  display_first_last: string;
+  display_last_comma_first: string;
+  display_fi_last: string;
+  player_slug: string;
+  birthdate?: string;
+  school?: string;
+  country?: string;
+  last_affiliation?: string;
+  height?: string;
+  weight?: string;
+  season_exp?: number;
+  jersey?: string;
+  position?: string;
+  rosterstatus?: string;
+  games_played_current_season_flag?: string;
+  team_id?: number;
+  team_name?: string;
+  team_abbreviation?: string;
+  team_code?: string;
+  team_city?: string;
+  playercode?: string;
+  from_year?: number;
+  to_year?: number;
+  dleague_flag?: string;
+  nba_flag?: string;
+  games_played_flag?: string;
+  draft_year?: string;
+  draft_round?: string;
+  draft_number?: string;
+  greatest_75_flag?: string;
+}
+
+export type PlayerRadarData = {
+  player_name: string;
+  season: string;
+  pts: number;
+  ast: number;
+  reb: number;
+  ts_pct: number; // true shooting percentage (0.45 → 0.70)
+  usg_pct: number; // usage percentage (10 → 40)
+  net_rating: number; // impact global (-15 → +15)
+};
+
+export interface PlayerSeasonStats {
+  id: number;
+  player_name: string;
+  team_abbreviation: string;
+  age: number;
+  player_height: number;
+  player_weight: number;
+  college: string;
+  country: string;
+  draft_year: number | null;
+  draft_round: number | null;
+  draft_number: number | null;
+  gp: number;
+  pts: number;
+  reb: number;
+  ast: number;
+  net_rating: number;
+  oreb_pct: number;
+  dreb_pct: number;
+  usg_pct: number;
+  ts_pct: number;
+  ast_pct: number;
+  season: string;
+}
