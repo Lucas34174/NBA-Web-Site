@@ -91,7 +91,6 @@ app.get("/game/season", (req, res) => {
           MIN(SUBSTR(season_id, 2)) as first_season,
           MAX(SUBSTR(season_id, 2)) as last_season
         FROM game`;
-
   console.log("q: /game/season");
   db.query(q, (err, result) => {
     if (err) {

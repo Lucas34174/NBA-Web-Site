@@ -201,7 +201,7 @@ export default function Home() {
           className="display-10 text-center
          fw-bold text-white mb-0 "
         >
-          {"🏀 NBA from " + first_season + " to " + last_season}
+          {" NBA "}
         </h1>
         <h1 className="h2 "></h1>
         <h1 className="h6 text-center text-white text-secondary fs-10 ">
@@ -234,7 +234,11 @@ export default function Home() {
           value2={last_season - first_season}
           label2="Seasons"
         />
-        <StatCard title="Points marqués" label1="panier" value1={total_point} />
+        <StatCard
+          title="Points marqués"
+          label1="paniers"
+          value1={total_point}
+        />
       </div>
       {history && (
         <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 mt-2  ">
