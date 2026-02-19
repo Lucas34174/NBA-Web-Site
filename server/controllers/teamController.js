@@ -1,94 +1,48 @@
 const db = require("../config/db");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.getAllTeams = (req, res) => {
-  db.query("SELECT id,full_name FROM team", (err, result) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    res.send(result);
-  });
-};
+exports.getAllTeams = asyncHandler(async (req, res) => {
+  const [result] = await db.query("SELECT id, full_name FROM team");
+  res.send(result);
+});
 
-exports.getTeamById = (req, res) => {
-  let q = "SELECT * FROM team_details WHERE id=" + req.params.id;
-  db.query(q, (err, result) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    res.send(result);
-  });
-};
+exports.getTeamById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const q = "SELECT * FROM team_details WHERE team_id = ?";
+  const [result] = await db.query(q, [id]);
+  res.send(result);
+});
 
-exports.getTeamsNumber = (req, res) => {
-  let q = "SELECT count(*)  as team_num FROM team";
-  console.log("q: team/number");
-  db.query(q, (err, result) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    res.send(result);
-    console.log(result);
-  });
-};
+exports.getTeamsNumber = asyncHandler(async (req, res) => {
+  const q = "SELECT COUNT(*) as team_num FROM team";
+  const [result] = await db.query(q);
+  res.send(result);
+});
 
-exports.getGreatestTeam = (req, res) => {
+exports.getGreatestTeam = asyncHandler(async (req, res) => {
   const q = `
   SELECT 
-g.team_id ,
-SUM(g.pts) as points 
-FROM(
-    SELECT team_id_home as team_id , SUM(pts_home) as pts 
-    FROM game
-    GROUP BY team_id_home
-    UNION ALL
-    SELECT team_id_away as team_id , SUM(pts_away) as pts 
-    FROM game
-    GROUP BY team_id_away 
-) as g
-LEFT JOIN team  t 
-ON g.team_id = t.id 
-GROUP BY g.team_id
-ORDER BY points DESC
-LIMIT 1;`;
-  console.log("q: /team/greatest");
-  db.query(q, (err, result) => {
-    if (err) {
-      console.log("err");
-    }
-    res.send(result[0]);
-    console.log(result[0]);
-  });
-};
+    g.team_id,
+    SUM(g.pts) as points 
+  FROM (
+      SELECT team_id_home as team_id, SUM(pts_home) as pts 
+      FROM game
+      GROUP BY team_id_home
+      UNION ALL
+      SELECT team_id_away as team_id, SUM(pts_away) as pts 
+      FROM game
+      GROUP BY team_id_away 
+  ) as g
+  LEFT JOIN team t 
+  ON g.team_id = t.id 
+  GROUP BY g.team_id
+  ORDER BY points DESC
+  LIMIT 1;`;
+  const [result] = await db.query(q);
+  res.send(result[0]);
+});
 
-exports.getTeamById = (req, res) => {
-  const { id } = req.params;
-  const q = `
-    SELECT 
-      team_id,
-      nickname,
-      abbreviation,
-      yearfounded,
-      city,
-      arena,
-      arenacapacity,
-      generalmanager,
-      owner,
-      headcoach
-    FROM team_details
-    WHERE team_id = ?;
-  `;
-  db.query(q, [id], (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result[0]);
-  });
-};
-
-exports.getTeamdetails = async (req, res) => {
+exports.getTeamdetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const q = `
     SELECT 
@@ -112,15 +66,11 @@ exports.getTeamdetails = async (req, res) => {
     LEFT JOIN team_details td ON t.id = td.team_id
     WHERE t.id = ?;
   `;
-  db.query(q, [id], (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result[0]);
-  });
-};
+  const [result] = await db.query(q, [id]);
+  res.send(result[0]);
+});
 
-exports.getTeamHistory = (req, res) => {
+exports.getTeamHistory = asyncHandler(async (req, res) => {
   const q = `
   SELECT 
     team_id,
@@ -131,17 +81,11 @@ exports.getTeamHistory = (req, res) => {
   FROM team_history
   WHERE team_id = ?
   ORDER BY year_founded ASC;`;
-  let id = req.params.id;
-  db.query(q, [id], (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result);
-    console.log(result);
-  });
-};
+  const [result] = await db.query(q, [req.params.id]);
+  res.send(result);
+});
 
-exports.getTeamStats = (req, res) => {
+exports.getTeamStats = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const q = `
     SELECT 
@@ -196,48 +140,37 @@ exports.getTeamStats = (req, res) => {
     id, // WHERE
   ];
 
-  db.query(q, params, (err, result) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ message: "Database error" });
-    }
-    console.log(result[0]);
-    res.send(result[0]);
-  });
-};
+  const [result] = await db.query(q, params);
+  res.send(result[0]);
+});
 
-exports.getTeamLastGame = (req, res) => {
+exports.getTeamLastGame = asyncHandler(async (req, res) => {
   const q = `
   SELECT 
     game_id,
     game_date,
     team_name_home,
     team_name_away,
-    SUBSTR(season_id,2,5) as season,
+    SUBSTR(season_id, 2, 5) as season,
     team_abbreviation_home,
     team_abbreviation_away,
     pts_home,
     pts_away,
     wl_home,
     season_type,
-    (pts_home+pts_away) as speci
+    (pts_home + pts_away) as speci
   FROM game 
-  WHERE (team_id_away= ? or team_id_home= ? ) and season_type='Regular season' 
-  order by game_date desc limit 20;
+  WHERE (team_id_away = ? OR team_id_home = ?) AND season_type = 'Regular season' 
+  ORDER BY game_date DESC 
+  LIMIT 20;
   `;
-  const id = req.params.id;
-  db.query(q, [id, id], (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result);
-    console.log(result);
-  });
-};
+  const { id } = req.params;
+  const [result] = await db.query(q, [id, id]);
+  res.send(result);
+});
 
-exports.getTeamSeasonPlayers = (req, res) => {
-  const abbr = req.params.abbr;
-  const season = req.params.season;
+exports.getTeamSeasonPlayers = asyncHandler(async (req, res) => {
+  const { abbr, season } = req.params;
   const q = `
 SELECT DISTINCT
     pss.player_name,
@@ -266,62 +199,17 @@ LEFT JOIN common_player_info cp
      COLLATE utf8mb4_0900_ai_ci
 WHERE pss.season = ?
   AND pss.team_abbreviation = ?;`;
-  db.query(q, [season, abbr], (err, result) => {
-    if (err) console.log(err);
-    res.send(result);
-    console.log(result);
-  });
-};
+  const [result] = await db.query(q, [season, abbr]);
+  res.send(result);
+});
 
-exports.getTeamSeasonStats = (req, res) => {
-  const team = req.params.team;
-  const season = req.params.season;
+exports.getTeamSeasonStats = asyncHandler(async (req, res) => {
+  const { team, season } = req.params;
   const q = `
   SELECT *
-    FROM teams_season_stats
-    WHERE season = ?
+  FROM teams_season_stats
+  WHERE season = ?
   AND team LIKE ?;`;
-  db.query(q, [season, `%${team}%`], (err, result) => {
-    if (err) console.log(err);
-    res.send(result[0]);
-    console.log(result[0]);
-  });
-};
-
-// exports.getTeamSeasonPlayers = (req, res) => {
-//   const abbr = req.params.abbr;
-//   const season = req.params.season;
-//   const q = `
-//     SELECT DISTINCT
-//         pss.player_name,
-//         cp.first_name,
-//         cp.last_name,
-//         cp.position,
-//         pss.player_height,
-//         pss.player_weight,
-//         cp.jersey,
-//         pss.country,
-//         pss.gp,
-//         pss.pts,
-//         pss.reb,
-//         pss.ast,
-//         pss.net_rating,
-//         pss.ts_pct,
-//         pss.ast_pct,
-//         pss.oreb_pct,
-//         pss.dreb_pct,
-//         pss.age
-//     FROM players_season_stats pss
-//     LEFT JOIN common_player_info cp
-//     ON CONCAT(cp.first_name, ' ', cp.last_name)
-//         COLLATE utf8mb4_0900_ai_ci
-//         = pss.player_name
-//         COLLATE utf8mb4_0900_ai_ci
-//     WHERE pss.season = ?
-//       AND pss.team_abbreviation = ?;`;
-//   db.query(q, [season, abbr], (err, result) => {
-//     if (err) console.log(err);
-//     res.send(result);
-//     console.log(result);
-//   });
-// };
+  const [result] = await db.query(q, [season, `%${team}%`]);
+  res.send(result[0]);
+});

@@ -1,70 +1,46 @@
 const db = require("../config/db");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.getAvgPoints = (req, res) => {
+exports.getAvgPoints = asyncHandler(async (req, res) => {
   const q = `
-  
-  SELECT 
-SUBSTR(season_id,2,4) AS season,
-AVG(pts_home + pts_away) as total_points,
-AVG(pts_home) as home_points,
-AVG(pts_away) as away_points,
-COUNT(*) as match_num
-FROM game
-WHERE SUBSTR(season_id,1,1) = 2
-GROUP BY season_id`;
-  db.query(q, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    let season = [];
-    let total_points = [];
-    let home_points = [];
-    let away_points = [];
-    let match_num = [];
-    for (let i = 0; i < result.length; i++) {
-      season.push(result[i].season);
-      total_points.push(result[i].total_points);
-      home_points.push(result[i].home_points);
-      away_points.push(result[i].away_points);
-      match_num.push(result[i].match_num);
-    }
+    SELECT 
+      SUBSTR(season_id, 2, 4) AS season,
+      AVG(pts_home + pts_away) as total_points,
+      AVG(pts_home) as home_points,
+      AVG(pts_away) as away_points,
+      COUNT(*) as match_num
+    FROM game
+    WHERE SUBSTR(season_id, 1, 1) = 2
+    GROUP BY season_id`;
 
-    const data = {
-      season: season,
-      total_points: total_points,
-      home_points: home_points,
-      away_points: away_points,
-      match_num: match_num,
-    };
-    res.send(data);
-    console.log(data);
-  });
-};
+  const [result] = await db.query(q);
 
-exports.getSumMatch = (req, res) => {
+  const data = {
+    season: result.map((r) => r.season),
+    total_points: result.map((r) => r.total_points),
+    home_points: result.map((r) => r.home_points),
+    away_points: result.map((r) => r.away_points),
+    match_num: result.map((r) => r.match_num),
+  };
+
+  res.send(data);
+});
+
+exports.getSumMatch = asyncHandler(async (req, res) => {
   const q = `
-  SELECT 
-    SUBSTR(season_id,2,4) AS season,
-    COUNT(*) as match_num
-  FROM game
-  WHERE SUBSTR(season_id,1,1) = 2
-  GROUP BY season_id`;
-  db.query(q, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    let season = [];
-    let match_num = [];
-    for (let i = 0; i < result.length; i++) {
-      season.push(result[i].season);
-      match_num.push(result[i].match_num);
-    }
+    SELECT 
+      SUBSTR(season_id, 2, 4) AS season,
+      COUNT(*) as match_num
+    FROM game
+    WHERE SUBSTR(season_id, 1, 1) = 2
+    GROUP BY season_id`;
 
-    const data = {
-      season: season,
-      match_num: match_num,
-    };
-    res.send(data);
-    console.log(data);
-  });
-};
+  const [result] = await db.query(q);
+
+  const data = {
+    season: result.map((r) => r.season),
+    match_num: result.map((r) => r.match_num),
+  };
+
+  res.send(data);
+});

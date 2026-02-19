@@ -1,6 +1,7 @@
 const db = require("../config/db");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.getNavbarPlayer = (req, res) => {
+exports.getNavbarPlayer = asyncHandler(async (req, res) => {
   const q = `
   SELECT 
     person_id,
@@ -16,12 +17,6 @@ exports.getNavbarPlayer = (req, res) => {
     jersey
   FROM common_player_info
   `;
-  db.query(q, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result);
-    console.log("NAVBAR");
-    console.log(result);
-  });
-};
+  const result = await db.query(q);
+  res.send(result);
+});

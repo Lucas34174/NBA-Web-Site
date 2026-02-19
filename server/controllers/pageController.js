@@ -1,6 +1,7 @@
 const db = require("../config/db");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.getTeamPage = (req, res) => {
+exports.getTeamPage = asyncHandler(async (req, res) => {
   const q = `  
   SELECT 
     team_id,
@@ -14,11 +15,6 @@ exports.getTeamPage = (req, res) => {
     generalmanager,
     headcoach
   FROM team_details;`;
-  db.query(q, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result);
-    console.log(result);
-  });
-};
+  const result = await db.query(q);
+  res.send(result);
+});
