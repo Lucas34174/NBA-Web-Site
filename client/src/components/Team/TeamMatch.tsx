@@ -36,7 +36,6 @@ export default function TeamMatch({ teamId }: props) {
       console.log(err);
     }
   };
-
   useEffect(() => {
     fetchGame(teamId);
     fetchSeason(teamId);
@@ -57,11 +56,13 @@ export default function TeamMatch({ teamId }: props) {
             .includes(searchTerm.toLowerCase()) ||
           game.team_abbreviation_home
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+            .includes(searchTerm.toLowerCase()),
       );
     }
     if (yearFilter !== "all") {
-      filtered = filtered?.filter((game) => game.season_id === yearFilter);
+      filtered = filtered?.filter(
+        (game) => game.season_id === yearFilter.slice(0, 4),
+      );
     }
 
     if (seasonFilter !== "all") {
@@ -69,16 +70,16 @@ export default function TeamMatch({ teamId }: props) {
         filtered = filtered?.filter((game) => game.season_type === "Playoffs");
       } else if (seasonFilter === "regular") {
         filtered = filtered?.filter(
-          (game) => game.season_type === "Regular Season"
+          (game) => game.season_type === "Regular Season",
         );
       } else if (seasonFilter === "allstar") {
         filtered = filtered?.filter(
           (game) =>
-            game.season_type === "All-Star" || game.season_type === "All Star"
+            game.season_type === "All-Star" || game.season_type === "All Star",
         );
       } else if (seasonFilter === "pre") {
         filtered = filtered?.filter(
-          (game) => game.season_type === "Pre Season"
+          (game) => game.season_type === "Pre Season",
         );
       }
     }

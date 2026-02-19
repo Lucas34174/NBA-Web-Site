@@ -21,10 +21,10 @@ app.use(express.json());
 app.use("/team", teamRoutes);
 app.use("/stat", statRoutes);
 app.use("/season", seasonRoutes);
-app.use("/player", playerRoutes);
-app.use("/page", pageRoutes);
 app.use("/navbar", navbarRoutes);
 app.use("/game", gameRoutes);
+app.use("/player", playerRoutes);
+app.use("/page", pageRoutes);
 app.use("/filter", filterRoutes);
 
 const port = 7000;

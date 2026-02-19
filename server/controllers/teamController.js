@@ -8,9 +8,22 @@ exports.getAllTeams = asyncHandler(async (req, res) => {
 
 exports.getTeamById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const q = "SELECT * FROM team_details WHERE team_id = ?";
-  const [result] = await db.query(q, [id]);
-  res.send(result);
+  const q = `
+  SELECT 
+      team_id,
+      nickname,
+      abbreviation,
+      yearfounded,
+      city,
+      arena,
+      arenacapacity,
+      generalmanager,
+      owner,
+      headcoach
+    FROM team_details
+    WHERE team_id = ?`;
+  const [result] = await db.query(q, [id, id]);
+  res.send(result[0]);
 });
 
 exports.getTeamsNumber = asyncHandler(async (req, res) => {

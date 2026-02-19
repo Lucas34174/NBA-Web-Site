@@ -99,7 +99,7 @@ exports.getGameByTeamId = asyncHandler(async (req, res) => {
       game_date,
       team_name_home,
       team_name_away,
-      SUBSTR(season_id, 2, 5) as season,
+      SUBSTR(season_id, 2, 5) as season_id,
       team_abbreviation_home,
       team_abbreviation_away,
       pts_home,

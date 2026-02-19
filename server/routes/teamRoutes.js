@@ -3,7 +3,6 @@ const router = express.Router();
 const teamController = require("../controllers/teamController");
 
 router.get("/", teamController.getAllTeams);
-router.get("/:id", teamController.getTeamById);
 router.get("/number", teamController.getTeamsNumber);
 router.get("/greatest", teamController.getGreatestTeam);
 router.get("/:id", teamController.getTeamById);

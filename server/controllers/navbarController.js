@@ -17,6 +17,6 @@ exports.getNavbarPlayer = asyncHandler(async (req, res) => {
     jersey
   FROM common_player_info
   `;
-  const result = await db.query(q);
+  const [result] = await db.query(q);
   res.send(result);
 });

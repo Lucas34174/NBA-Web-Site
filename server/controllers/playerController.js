@@ -121,6 +121,7 @@ exports.getPlayerCount = asyncHandler(async (req, res) => {
       SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END) as inactif
     FROM player`;
   const [result] = await db.query(q);
+  console.log("getPlayerCount" + result);
   res.send(result);
 });
 

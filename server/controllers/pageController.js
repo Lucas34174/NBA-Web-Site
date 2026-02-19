@@ -16,5 +16,5 @@ exports.getTeamPage = asyncHandler(async (req, res) => {
     headcoach
   FROM team_details;`;
   const result = await db.query(q);
-  res.send(result);
+  res.send(result[0]);
 });
